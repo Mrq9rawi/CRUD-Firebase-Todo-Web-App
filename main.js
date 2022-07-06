@@ -47,17 +47,22 @@ function addTaskToTasks(userTask) {
 		taskName: userTask,
 		completed: false,
 	};
-	// Add Task Object To Array
-	tasksArr.push(task);
 	// Add Task Object To DB
 	db.ref('tasks/' + `task${task.taskId}`).set({
 		taskId: task.taskId,
 		taskName: task.taskName,
 		completed: task.completed,
 	});
+}
+
+let tasksRef = db.ref('/tasks');
+
+tasksRef.on('child_added', (data) => {
+	// Add Task Object To Array
+	tasksArr.push(data.val());
 	// Add Task To Document
 	createTaskElement(tasksArr);
-}
+});
 
 function createTaskElement(tasksArr) {
 	// Clear Tasks div
