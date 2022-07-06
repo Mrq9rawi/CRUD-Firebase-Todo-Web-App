@@ -1,3 +1,18 @@
+// Firebase configuration
+const firebaseConfig = {
+	apiKey: "AIzaSyARM-_wqVSKOLIq7-3BSAYiihh1T_rc1l4",
+	authDomain: "todo-list-crud-2bc35.firebaseapp.com",
+	databaseURL: "https://todo-list-crud-2bc35-default-rtdb.firebaseio.com",
+	projectId: "todo-list-crud-2bc35",
+	storageBucket: "todo-list-crud-2bc35.appspot.com",
+	messagingSenderId: "486378149605",
+	appId: "1:486378149605:web:6555abf82d4f135e15a60c"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+let db = firebase.database();
+
 // User Inputs
 let userInput = document.querySelector("#task-name");
 let addButton = document.querySelector("#add-task");
@@ -34,6 +49,12 @@ function addTaskToTasks(userTask) {
 	};
 	// Add Task Object To Array
 	tasksArr.push(task);
+	// Add Task Object To DB
+	db.ref('tasks/' + `task${task.taskId}`).set({
+		taskId: task.taskId,
+		taskName: task.taskName,
+		completed: task.completed,
+	});
 	// Add Task To Document
 	createTaskElement(tasksArr);
 }
